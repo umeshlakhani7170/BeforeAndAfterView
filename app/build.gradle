@@ -1,27 +1,13 @@
-//apply plugin: 'com.android.application'
-//TODO remove LAUNCHER filter
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-group = 'com.github.factoryhr'
-apply plugin: 'kotlin-android'
-
-apply plugin: 'kotlin-android-extensions'
-
-buildscript{
-    ext.glide_version = "3.7.0"
-    ext.constraint_layout_version = "1.1.0"
-    ext.support_version = "27.1.1"
-    ext.junit_version = "4.12"
-    ext.runner_version = "1.0.1"
-    ext.expresso_core_version = "3.0.1"
-}
+apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdk 35
+    buildToolsVersion = '35.0.0'
+    namespace 'com.d42gmail.cavar.beforeandafter'
     defaultConfig {
-        //applicationId "com.d42gmail.cavar.beforeandafter"
-        minSdkVersion 19
-        targetSdkVersion 27
+        applicationId "com.d42gmail.cavar.beforeandafter"
+        minSdkVersion 21
+        targetSdkVersion 35
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -35,12 +21,21 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation "com.android.support:appcompat-v7:$support_version"
-    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    testImplementation "junit:junit:$junit_version"
-    androidTestImplementation "com.android.support.test:runner:$runner_version"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$expresso_core_version"
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+
+    implementation 'androidx.annotation:annotation:1.9.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.6.1', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    implementation 'org.jetbrains:annotations:26.0.1'
+    implementation(platform('org.jetbrains.kotlin:kotlin-bom:2.1.0'))
 }
