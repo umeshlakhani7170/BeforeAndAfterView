@@ -10,6 +10,9 @@ import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 
@@ -31,8 +34,9 @@ public class ClipDrawableAsync<T> extends AsyncTask<T, Void, ArrayList<ClipDrawa
         this.loadedFinishedListener = loadedFinishedListener;
     }
 
+    @SafeVarargs
     @Override
-    protected ArrayList<ClipDrawable> doInBackground(T... args) {
+    protected final ArrayList<ClipDrawable> doInBackground(T... args) {
         ArrayList<ClipDrawable> array = new ArrayList<>();
         if (Looper.myLooper() == null) {
             Looper.prepare();
@@ -74,7 +78,7 @@ public class ClipDrawableAsync<T> extends AsyncTask<T, Void, ArrayList<ClipDrawa
     }
 
     @Override
-    protected void onPostExecute(ArrayList<ClipDrawable> array) {
+    protected void onPostExecute(@NonNull ArrayList<ClipDrawable> array) {
         if (array.size() == 2 && imageRefLeft.get() != null && imageRefRight.get() != null) {
             ImageView leftImageView = imageRefLeft.get();
             ImageView rightImageView = imageRefRight.get();
@@ -117,6 +121,7 @@ public class ClipDrawableAsync<T> extends AsyncTask<T, Void, ArrayList<ClipDrawa
         return height;
     }
 
+    @Nullable
     private Bitmap getScaledBitmap(Bitmap bitmap) {
         try {
             ImageView imageView = imageRefLeft.get();

@@ -32,11 +32,11 @@ public class BeforeAndAfterView extends RelativeLayout implements LoadingListene
     private String afterUrl;
     private Boolean roundCorners;
 
-    private SeekBar ptSeekBar;
-    private ImageView ivPlaceHolder;
-    private ImageView ptBackgroundImageLeft;
-    private ImageView ptBackgroundImageRight;
-    private View vMask;
+    private final SeekBar ptSeekBar;
+    private final ImageView ivPlaceHolder;
+    private final ImageView ptBackgroundImageLeft;
+    private final ImageView ptBackgroundImageRight;
+    private final View vMask;
 
     public BeforeAndAfterView(Context context) {
         this(context, null);
@@ -56,12 +56,11 @@ public class BeforeAndAfterView extends RelativeLayout implements LoadingListene
         ptBackgroundImageRight = findViewById(R.id.ptBackgroundImageRight);
         vMask = findViewById(R.id.vMask);
 
-        getAttrsValues(context, attrs);
+        getAttrsValues(context, attrs, defStyleAttr);
     }
 
-    private void getAttrsValues(Context context, AttributeSet attrs) {
-        TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.BeforeAndAfterView, 0, 0);
-
+    private void getAttrsValues(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
+        TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.BeforeAndAfterView, defStyleAttr, 0);
         try {
             beforeSrc = attributes.getResourceId(R.styleable.BeforeAndAfterView_rightImageSrc, Constants.INIT_INT);
             afterSrc = attributes.getResourceId(R.styleable.BeforeAndAfterView_leftImageSrc, Constants.INIT_INT);
@@ -69,7 +68,7 @@ public class BeforeAndAfterView extends RelativeLayout implements LoadingListene
             afterUrl = attributes.getString(R.styleable.BeforeAndAfterView_leftImageUrl);
             roundCorners = attributes.getBoolean(R.styleable.BeforeAndAfterView_roundCorners, false);
             cornerMaskDrawable = attributes.getResourceId(R.styleable.BeforeAndAfterView_cornerMask, R.drawable.round_edge_mask);
-            progress = attributes.getInt(R.styleable.BeforeAndAfterView_progress, 50);
+            progress = attributes.getInt(R.styleable.BeforeAndAfterView_progress, Constants.DEFAULT_PROGRESS);
             progressDrawable = attributes.getResourceId(R.styleable.BeforeAndAfterView_progressDrawable, R.drawable.seek_bar_thumb);
             progressPaddingStart = attributes.getDimension(R.styleable.BeforeAndAfterView_progressPaddingStart, UiUtils.convertDpToPix(Constants.DEFAULT_PROGRESS_PADDING, context));
             progressPaddingEnd = attributes.getDimension(R.styleable.BeforeAndAfterView_progressPaddingEnd, UiUtils.convertDpToPix(Constants.DEFAULT_PROGRESS_PADDING, context));
@@ -78,8 +77,9 @@ public class BeforeAndAfterView extends RelativeLayout implements LoadingListene
             attributes.recycle();
         }
 
+
         applyStyle();
-        loadingArbitrar();
+        loadingAttrsImages();
     }
 
     private void applyStyle() {
@@ -93,7 +93,7 @@ public class BeforeAndAfterView extends RelativeLayout implements LoadingListene
         }
     }
 
-    private void loadingArbitrar() {
+    private void loadingAttrsImages() {
         new Handler().post(() -> {
             if (beforeSrc != 0 && afterSrc != 0) {
                 loadImagesBySrc(afterSrc, beforeSrc);
